@@ -12,4 +12,3 @@
 	location.href = "${pageContext.request.contextPath}/study/1026/test13.jsp";
 	/* location.href = "test13.jsp"; */
 </script>
-	

@@ -2,9 +2,8 @@ package study.database;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,9 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+@SuppressWarnings("serial")
 @WebServlet("/database/loginOk")
 public class LoginOk extends HttpServlet {
-
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String mid = request.getParameter("mid")==null ? "" : request.getParameter("mid");
@@ -24,18 +23,40 @@ public class LoginOk extends HttpServlet {
 		
 		LoginDAO dao = new LoginDAO();
 		
+		// 회원 여부 판별하기
 		LoginVO vo = dao.getLoginCheck(mid, pwd);
 		
 		PrintWriter out = response.getWriter();
 		
 		if(vo.getName() != null) {
-			// 회원 인증 성공
-			/* 1.자주 사용하는 변수나 객체를 세션에 저장한다.(아이디, 성명, 닉네임) 
-			   2.쿠키에 아이디 저장 또는 제거 
-				 3.DB에 처리할 내용들(최종 방문일, 포인트 누적, 오늘 방문일 수 누적) 
-			*/
+			// 회원 인증 성공....
+			// 1.자주사용하는 변수(객체) 세션에 저장(아이디,성명, 닉네임), 2.쿠키에 아이디 저장또는 제거,
+			// 3.DB에 처리할 내용들(최종방문일, 포인터누적, 오늘 방문일수 누적...)
 			
-			//1.세션처리
+			// 방문포인트 처리하기?(최종접속일/방문카운트도 함께 업데이트 처리)
+			// 하루의 방문포인트는 매번 10포인트씩 주기로 한다. 단, 최대 50포이터까지만 인정한다.
+			
+			// 날짜 비교
+			Date today = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String strToday = sdf.format(today);
+			System.out.println("strToday : " + strToday);
+			
+			if(strToday.equals(vo.getLastDate().substring(0,10))) {
+				// 오늘 다시 방문한 경우
+				vo.setTodayCount(vo.getTodayCount()+1);
+				if(vo.getTodayCount() <= 5) vo.setPoint(vo.getPoint()+10);
+			}
+			else {
+				// 오늘 처음 방문한 경우가
+				vo.setTodayCount(1);
+				vo.setPoint(vo.getPoint()+10);
+			}
+			
+			// 3.DB작업(변경된 내용들을 DB에 저장(갱신))
+			dao.setLoginUpdate(vo);
+			
+			// 1.세션처리
 			HttpSession session = request.getSession();
 			session.setAttribute("sMid", mid);
 			session.setAttribute("sName", vo.getName());
@@ -43,7 +64,8 @@ public class LoginOk extends HttpServlet {
 			session.setAttribute("sLastDate", vo.getLastDate());
 			session.setAttribute("sTodayCount", vo.getTodayCount());
 			
-			//2.쿠키저장
+			
+			// 2.쿠키저장
 			String idSave = request.getParameter("idSave")==null ? "off" : "on";
 			Cookie cookieMid = new Cookie("cMid", mid);
 			cookieMid.setPath("/");
@@ -55,39 +77,19 @@ public class LoginOk extends HttpServlet {
 			}
 			response.addCookie(cookieMid);
 			
-			//숙제 : 방문포인트 처리하기(최종접속일/방문카운트도 함께 업데이트 처리)
-			//하루의 방문포인트는 매번 10p 씩 주기로 한다. 단, 최대 50포인트까지만 인정한다.
 			
-			//3.DB작업
-			String lastDate = LocalDateTime.now().toString().substring(0,16);
-			//하루 방문 카운트 업데이트
-//			if(vo.getLastDate() < lastDate)
-//				vo.setTodayCount();
-
-			//최종접속일 업데이트
-//			vo.setLastDate(LastDate);
-			
-			//하루 방문 포인트 업데이트
-			int point = vo.getPoint();
-			if(vo.getTodayCount()<=5) {
-				point += 10;
-				vo.setPoint(point);
-			}
-//			dao.pointPlus(vo);
-			
-			
-			//정상 로그인 체크 이후에 모든 처리가 끝나면 정상 처리 메세지 출력 후 memberMain.jsp로 보낸다.
-			out.print("<script>");
-			out.print("alert('" + mid + "님, 로그인 되었습니다.');");
-			out.print("location.href='" + request.getContextPath() + "/study/database/memberMain.jsp';");
-			out.print("</script>");
+			// 정상 로그인 체크이후에 모든 처리가 끝나면 정상처리 메세지 출력후 memberMain.jsp로 보낸다.
+			out.println("<script>");
+			out.println("alert('"+mid+"님 로그인 되었습니다.');");
+			out.println("location.href='"+request.getContextPath()+"/study/database/memberMain.jsp';");
+			out.println("</script>");
 		}
-		else { 
-			//회원 인증 실패시 다시 로그인 창으로 보낸다.
-			out.print("<script>");
-			out.print("alert('존재하지 않는 회원입니다.');");
-			out.print("location.href='" + request.getContextPath() + "/study/database/login.jsp';");
-			out.print("</script>");
+		else {
+			// 회원인증 실패시는 다시 로그인창으로 보낸다.
+			out.println("<script>");
+			out.println("alert('로그인 실패~~');");
+			out.println("location.href='"+request.getContextPath()+"/study/database/login.jsp';");
+			out.println("</script>");
 		}
 	}
 }

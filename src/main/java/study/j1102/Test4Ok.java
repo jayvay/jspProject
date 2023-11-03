@@ -27,6 +27,6 @@ public class Test4Ok extends HttpServlet {
 		
 		String viewPage = "/study/1102_web_xml/test4_init.jsp";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
-		dispatcher.forward(request, response);
+		dispatcher.forward(request, response); 
 	}
 }

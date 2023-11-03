@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ include file="/include/memberCheck.jsp" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
@@ -8,14 +7,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>memberSearch.jsp</title>
+  <title>memberUpdate.jsp</title>
   <jsp:include page="/include/bs4.jsp" />
   <script>
     'use strict';
-    if(${empty vo.mid}) {
-    	alert("검색된 아이디가 없습니다.");
-    	location.href = "${ctp}/study/database/memberMain.jsp";
-    }
+    
+   	function fCheck() {
+			let pwd = document.getElementById("pwd").value;
+			let name = document.getElementById("name").value;
+			
+			if(pwd.trim() == "" || name.trim() == "") {
+				alert("수정할 정보를 입력하세요.");
+				document.getElementById("pwd").focus();
+			}
+			else {
+				myform.submit();
+			}
+		}
   </script>
   <style>
     th {
@@ -27,40 +35,32 @@
 <body>
 <p><br/></p>
 <div class="container text-center">
-  <h2>개별 회원 조회</h2>
+	<form name="myform" method="post" action="${ctp}/database/memberUpdateOk">
+  <h2>회원 정보 수정</h2>
   <table class="table table-bordered">
     <tr>
       <th>아이디</th>
-      <td>${vo.mid}</td>
+      <%-- <td><input type="text" name="mid" id="mid" value="${sMid}" class="form-control" readonly /></td> --%>
+      <td>${sMid}</td>
     </tr>
     <tr>
       <th>비밀번호</th>
-      <td>${vo.pwd}</td>
+      <td><input type="password" name="pwd" id="pwd" class="form-control" /></td>
     </tr>
     <tr>
       <th>성명</th>
-      <td>${vo.name}</td>
+      <td><input type="text" name="name" id="name" value="${sName}" class="form-control" /></td>
     </tr>
-    <c:if test="${sMid == vo.mid || sMid == 'admin'}">
-    <tr>
-      <th>포인트</th>
-      <td>${vo.point}</td>
-    </tr>
-    <tr>
-      <th>최종방문일</th>
-      <td>${fn: substring(vo.lastDate, 0, 16)}</td>
-    </tr>
-    <tr>
-      <th>오늘방문횟수</th>
-      <td>${vo.todayCount}</td>
-    </tr>
-    </c:if>
     <tr>
       <td colspan="2">
+     		<input type="button" value="정보수정" onclick="fCheck()" class="btn btn-success" />
+     		<input type="reset" value="다시입력" class="btn btn-success" />
         <input type="button" value="돌아가기" onclick="location.href='${ctp}/study/database/memberMain.jsp';" class="btn btn-success" />
       </td>
     </tr>
   </table>
+  <input type="hidden" name="mid" value="${sMid}" />
+  </form>
 </div>
 <p><br/></p>
 </body>

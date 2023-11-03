@@ -1,4 +1,4 @@
-package study.database;
+package guest;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,17 +11,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @SuppressWarnings("serial")
-@WebServlet("/database/memberList")
-public class MemberList extends HttpServlet {
+@WebServlet("/GuestList")
+public class GuestList extends HttpServlet {
+	@Override
+	public void init() {
+		// 비교후 회원이 아니면 돌려보내기...
+		//System.out.println("통과합니다.");
+	}
+	
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		LoginDAO dao = new LoginDAO();
+		//System.out.println("service....");
+		GuestDAO dao = new GuestDAO();
 		
-		ArrayList<LoginVO> vos = dao.getLoginList();
+		ArrayList<GuestVO> vos = dao.getGuestList();
 		
 		request.setAttribute("vos", vos);
 		
-		String viewPage = "/study/database/memberList.jsp";
+		String viewPage = "/guest/guestList.jsp";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
 		dispatcher.forward(request, response);
 	}

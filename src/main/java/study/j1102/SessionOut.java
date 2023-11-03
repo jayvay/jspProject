@@ -18,7 +18,7 @@ public class SessionOut extends HttpServlet {
 		
 		session.removeAttribute("sLogoName");
 		session.removeAttribute("sHomeAddress");
-		
+		 
 		String sw = request.getParameter("sw")==null ? "" : request.getParameter("sw");
 		
 		if(!sw.equals("test4_init")) {

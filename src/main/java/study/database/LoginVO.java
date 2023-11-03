@@ -7,7 +7,7 @@ public class LoginVO {
 	private String name;
 	private int point;
 	private String lastDate;
-	private	int todayCount;
+	private int todayCount;
 	
 	public int getIdx() {
 		return idx;

@@ -13,17 +13,34 @@
 <jsp:include page="/include/header.jsp" />
 <p><br/></p>
 	<div class="container">
-		<h2>방명록 작성하기</h2>
-		<form name="myform">
-		<table class="table table-borderless">
+		<h2>방명록 작성</h2>
+		<hr/>
+		<form name="myform" method="post" action="${ctp}/GuestInput">
+		<table class="table table-bordered text-center">
 			<tr>
-				<td>작성자 : </td>
-				<td></td>
+				<th>작성자</th>
+				<td><input type="text" name="name" id="name" class="form-control" autofocus required /></td>
+				<th>작성자IP</th>
+				<td><input type="text" name="hostIp" value="악성/비방/도배금지" class="form-control" readonly /></td>
 			</tr>
 			<tr>
-				<td><textarea rows="6" class="form-control"></textarea></td>
+				<th>메일주소</th>
+				<td><input type="text" name="email" class="form-control" required /></td>
+				<th>홈페이지</th>
+				<td><input type="text" name="homePage" class="form-control" required /></td>
+			</tr>
+			<tr>
+				<td colspan="4"><textarea name="content" rows="6" class="form-control" required ></textarea></td>
 			</tr>
 		</table>
+		<hr/>
+		<div class="row">
+			<div class="col text-left"><a href="${ctp}/GuestList"><input type="button" value="취소" class="btn btn-outline-danger"/></a></div>
+			<div class="col text-right">
+				<input type="reset" value="다시입력" class="btn btn-outline-info"/>
+				<input type="submit" value="등록" class="btn btn-info"/>
+			</div>
+		</div>
 		</form>
 	</div>
 <p><br/></p>

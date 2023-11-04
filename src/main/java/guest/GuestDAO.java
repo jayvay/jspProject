@@ -87,4 +87,26 @@ public class GuestDAO {
 		}
 		return vos;
 	}
+
+	//방명록 등록
+	public int getGuestInput(GuestVO vo) {
+		int res = 0;
+		
+		try {
+			sql = "insert into guest values (default,?,?,?,?,default,?)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, vo.getName());
+			pstmt.setString(2, vo.getContent());
+			pstmt.setString(3, vo.getEmail());
+			pstmt.setString(4, vo.getHomePage());
+			pstmt.setString(5, vo.getHostIp());
+			res = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		return res;
+	}
 }

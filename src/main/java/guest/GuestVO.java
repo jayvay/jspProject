@@ -8,6 +8,7 @@ public class GuestVO {
 	private String homePage;
 	private String visitDate;
 	private String hostIp;
+
 	public int getIdx() {
 		return idx;
 	}

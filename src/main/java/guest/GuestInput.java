@@ -24,7 +24,10 @@ public class GuestInput extends HttpServlet {
 		String email = request.getParameter("email")==null ? "" : request.getParameter("email");
 		String homePage = request.getParameter("homePage")==null ? "" : request.getParameter("homePage");
 		String visitDate = request.getParameter("visitDate")==null ? "" : request.getParameter("visitDate");
-		String hostIp = request.getRemoteAddr();
+		String hostIp = request.getParameter("hostIp")==null ? "" : request.getParameter("hostIp");
+		
+		name = name.replace("<", "&lt;");
+		name = name.replace(">", "&gt;");
 		
 		GuestVO vo = new GuestVO();
 		vo.setName(name);
@@ -40,7 +43,7 @@ public class GuestInput extends HttpServlet {
 		if(res != 0) {
 			PrintWriter out = response.getWriter();
 			out.print("<script>");
-			out.print("alert('방명록 등록 성공! 다시 시도하세요.');");
+			out.print("alert('방명록 등록 성공!');");
 			out.print("location.href='" + request.getContextPath() + "/GuestList';");
 			out.print("</script>");
  		}

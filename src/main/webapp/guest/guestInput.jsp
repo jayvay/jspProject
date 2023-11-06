@@ -21,13 +21,13 @@
 				<th>작성자</th>
 				<td><input type="text" name="name" id="name" class="form-control" autofocus required /></td>
 				<th>작성자IP</th>
-				<td><input type="text" name="hostIp" value="악성/비방/도배금지" class="form-control" readonly /></td>
+				<td><input type="text" name="hostIp" class="form-control" readonly /></td>
 			</tr>
 			<tr>
 				<th>메일주소</th>
 				<td><input type="text" name="email" class="form-control" required /></td>
 				<th>홈페이지</th>
-				<td><input type="text" name="homePage" class="form-control" required /></td>
+				<td><input type="text" name="homePage" value="https://" class="form-control" required /></td>
 			</tr>
 			<tr>
 				<td colspan="4"><textarea name="content" rows="6" class="form-control" required ></textarea></td>
@@ -41,6 +41,7 @@
 				<input type="submit" value="등록" class="btn btn-info"/>
 			</div>
 		</div>
+			<input type="hidden" name="hostIp" value="<%=request.getRemoteAddr()%>"/>
 		</form>
 	</div>
 <p><br/></p>

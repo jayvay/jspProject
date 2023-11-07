@@ -58,10 +58,12 @@
    </context-param>
    
    <!-- dbcp 설정 선언 -->
+   <!-- 
    <resource-ref>
    	<description>connection</description>
    	<res-ref-name>dbcp_mysql</res-ref-name>
-   	<res-type>javax.sql.DataSource</res-type>	<!-- 생략 가능한데 context.xml에서 생략하는 게 좋다 --> 
+   	<res-type>javax.sql.DataSource</res-type>	생략 가능한데 context.xml에서 생략하는 게 좋다 
 		<res-auth>Container</res-auth>
    </resource-ref>
+    -->
 </web-app>

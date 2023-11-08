@@ -20,8 +20,6 @@
 			<tr>
 				<th>작성자</th>
 				<td><input type="text" name="name" id="name" class="form-control" autofocus required /></td>
-				<th>작성자IP</th>
-				<td><input type="text" name="hostIp" class="form-control" /></td>
 			</tr>
 			<tr>
 				<th>메일주소</th>

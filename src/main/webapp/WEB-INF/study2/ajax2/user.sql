@@ -15,3 +15,4 @@ insert into user values (default, 'hkd1234', '홍길동', 20, '한양');
 insert into user values (default, 'go123', '고윤정', 28, '서울');
 
 select * from user;
+select * from login;

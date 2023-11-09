@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import study2.ajax1.AjaxTest1OkCommand;
+
 @SuppressWarnings("serial")
 @WebServlet("*.st")
 public class StudyController extends HttpServlet {
@@ -28,6 +30,9 @@ public class StudyController extends HttpServlet {
 			command = new AjaxTest1OkCommand();
 			command.execute(request, response);
 			viewPage = "/include/message.jsp";
+		}
+		else if(com.equals("/uuidProcess")) {
+			viewPage += "/uuid/uuidForm.jsp";
 		}
 		
 		request.getRequestDispatcher(viewPage).forward(request, response);

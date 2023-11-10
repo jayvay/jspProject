@@ -39,6 +39,18 @@
 					    </div>
 					  </div>
 	      </li>
+	      <li class="nav-item ml-2 mr-2">
+	         <div class="dropdown">
+					    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">MyPage</button>
+					    <div class="dropdown-menu">
+					      <a class="dropdown-item" href="memberMain.mem">회원메인방</a>
+					      <a class="dropdown-item" href="memberPwdCheck.mem">회원정보수정</a>
+					      <a class="dropdown-item" href="memberList.mem">회원리스트</a>
+					      <a class="dropdown-item" href="javascript:memberDelCheck()">회원탈퇴</a>
+					      <c:if test="${sLevel == 0}"><a class="dropdown-item" href="adminMain.ad">관리자메뉴</a></c:if>
+					    </div>
+					  </div>
+	      </li>
       </c:if>
      	<li class="nav-item">
         <c:if test="${level > 4}"><a class="nav-link" href="memberLogin.mem">Login</a></c:if>

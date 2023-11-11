@@ -39,6 +39,12 @@
 					alert("전송 실패");
 				}
 			});
+			
+		}
+		function lvSearch() {
+			let memberLv = document.getElementById("memberLv").value;
+			
+			location.href = "adminMemberList.ad?memberLv="+memberLv;
 		}
  	</script>
 </head>
@@ -50,11 +56,12 @@
 			<tr>
 				<td>
 					<div>등급별 검색
-						<select>
-							<option>관리자</option>
-							<option>준회원</option>
-							<option>정회원</option>
-							<option>우수회원</option>
+						<select name="memberLv" id="memberLv" onchange="lvSearch()">
+							<option value="4" ${memberLv==4 ? "selected" : ""}>전체회원</option>
+							<option value="0" ${memberLv==0 ? "selected" : ""}>관리자</option>
+							<option value="1" ${memberLv==1 ? "selected" : ""}>준회원</option>
+							<option value="2" ${memberLv==2 ? "selected" : ""}>정회원</option>
+							<option value="3" ${memberLv==3 ? "selected" : ""}>우수회원</option>
 						</select>
 					</div>
 				</td>

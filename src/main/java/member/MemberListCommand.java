@@ -13,11 +13,21 @@ public class MemberListCommand implements AdminInterface {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int memberLv = request.getParameter("memberLv")==null ? 4 : Integer.parseInt(request.getParameter("memberLv"));
+		
 		MemberDAO dao = new MemberDAO();
+		MemberVO vo = new MemberVO();
 		
-		ArrayList<MemberVO> vos = dao.getMemberList();
+		if(memberLv != 4) {
+			ArrayList<MemberVO> vos = dao.getMemberLvSearch(memberLv);
+			request.setAttribute("vos", vos );
+		}
+		else {
+			ArrayList<MemberVO> vos = dao.getMemberList();
+			request.setAttribute("vos", vos );
+		}
 		
-		request.setAttribute("vos", vos);
+		request.setAttribute("memberLv", memberLv);
 	}
 
 }

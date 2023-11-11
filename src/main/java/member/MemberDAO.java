@@ -304,5 +304,70 @@ public class MemberDAO {
 		}
 		return res;
 	}
+
+	//로그인하면 방문횟수,포인트 업데이트
+	public int setMemberLoginUpdate(MemberVO vo) {
+		int res = 0;
+		try {
+			sql = "update member set point=?, visitCnt=?, lastDate=now(), todayCnt=? where mid = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, vo.getPoint());
+			pstmt.setInt(2, vo.getVisitCnt());
+			pstmt.setInt(3, vo.getTodayCnt());
+			pstmt.setString(4, vo.getMid());
+			res =	pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		return res;
+	}
+
+	//회원 등급별 검색
+	public ArrayList<MemberVO> getMemberLvSearch(int memberLv) {
+		ArrayList<MemberVO> vos = new ArrayList<MemberVO>();
+		try {
+			sql = "select * from member where level = ? order by idx desc";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, memberLv);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				vo = new MemberVO();
+				vo.setIdx(rs.getInt("idx"));
+				vo.setMid(rs.getString("mid"));
+				vo.setPwd(rs.getString("pwd"));
+				vo.setNickName(rs.getString("nickName"));
+				vo.setName(rs.getString("name"));
+				vo.setGender(rs.getString("gender"));
+				vo.setBirthday(rs.getString("birthday"));
+				vo.setTel(rs.getString("tel"));
+				vo.setAddress(rs.getString("address"));
+				vo.setEmail(rs.getString("email"));
+				vo.setHomePage(rs.getString("homePage"));
+				vo.setJob(rs.getString("job"));
+				vo.setHobby(rs.getString("hobby"));
+				vo.setPhoto(rs.getString("photo"));
+				vo.setContent(rs.getString("content"));
+				vo.setUserInfor(rs.getString("userInfor"));
+				vo.setUserDel(rs.getString("userDel"));
+				vo.setPoint(rs.getInt("point"));
+				vo.setLevel(rs.getInt("level"));
+				vo.setVisitCnt(rs.getInt("visitCnt"));
+				vo.setStartDate(rs.getString("startDate"));
+				vo.setLastDate(rs.getString("lastDate"));
+				vo.setTodayCnt(rs.getInt("todayCnt"));
+				vos.add(vo);
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vos;
+	}
 	
 }

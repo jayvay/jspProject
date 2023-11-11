@@ -36,3 +36,5 @@ desc member;
 drop table member;
 
 select * from member;
+update member set point=130, visitCnt=3, lastDate=now(), todayCnt=3 where mid='admin';
+update member set pwd="03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4" where mid='admin';

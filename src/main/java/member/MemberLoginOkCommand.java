@@ -1,6 +1,7 @@
 package member;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,7 +25,7 @@ public class MemberLoginOkCommand implements MemberInterface {
 		MemberDAO dao = new MemberDAO();
 
 		MemberVO vo = dao.getMemberMidCheck(mid);
-		if(!vo.getMid().equals(mid)) {
+		if(vo.getMid() == null || vo.getUserDel().equals("OK") || !vo.getMid().equals(mid)) {
 			request.setAttribute("msg", "아이디를 확인하세요");
 			request.setAttribute("url", "memberLogin.mem");
 			return;
@@ -68,8 +69,20 @@ public class MemberLoginOkCommand implements MemberInterface {
 //			calendar.setTime(date);
 //			calendar.add(Calendar.DATE, 10);
 //			String strDate = sdf.format(date);
-			//가입 후 10일 이내 5번 이상 방문하면 정회원 등업
-//			  if(vo.getStartDate()) {
+			
+			//가입 후 10일 경과 후 5번 초과 방문하면 정회원 등업
+			
+			try {
+				//Date date1 = sdf.parse(strToday);
+				Date date2 = sdf.parse(vo.getStartDate());
+				long dRes = (today.getTime()- date2.getTime()) / (1000 * 60 * 60 * 24); 
+				System.out.println("가입후 지난 날짜 : " + dRes);
+				if(vo.getLevel()==1 && dRes <= 10 && vo.getVisitCnt() >= 5) vo.setLevel(2); 
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			
+			if(vo.getLevel()==1 && vo.getVisitCnt() >= 5) vo.setLevel(2);
 			
 			//세션 저장
 			String sStrLevel = "";

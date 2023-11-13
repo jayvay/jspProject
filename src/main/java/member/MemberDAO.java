@@ -243,12 +243,23 @@ public class MemberDAO {
 		return vos;
 	}
 
-	//회원 전체 리스트
-	public ArrayList<MemberVO> getMemberList() {
+	//회원 전체 리스트, 등급별 검색, 블록페이징
+	public ArrayList<MemberVO> getMemberList(int startIndexNo, int pageSize, int level) {
 		ArrayList<MemberVO> vos = new ArrayList<MemberVO>();
 		try {
-			sql = "select * from member order by idx desc";
-			pstmt = conn.prepareStatement(sql);
+			if(level > 3) {
+				sql = "select *, timestampdiff(day, lastDate, now()) as deleteDiff from member order by idx desc limit ?,?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, startIndexNo);
+				pstmt.setInt(2, pageSize);
+			}
+			else {
+				sql = "select *, timestampdiff(day, lastDate, now()) as deleteDiff from member where level = ? order by idx desc limit ?, ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, level);
+				pstmt.setInt(2, startIndexNo);
+				pstmt.setInt(3, pageSize);
+			}
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -276,6 +287,7 @@ public class MemberDAO {
 				vo.setStartDate(rs.getString("startDate"));
 				vo.setLastDate(rs.getString("lastDate"));
 				vo.setTodayCnt(rs.getInt("todayCnt"));
+				vo.setDeleteDiff(rs.getInt("deleteDiff"));
 				vos.add(vo);
 			}
 			
@@ -325,17 +337,70 @@ public class MemberDAO {
 		return res;
 	}
 
-	//회원 등급별 검색
-	public ArrayList<MemberVO> getMemberLvSearch(int memberLv) {
-		ArrayList<MemberVO> vos = new ArrayList<MemberVO>();
+	//전체(각 등급별) 회원 인원수 구하기
+	public int getTotRecCnt(int level) {
+		int totRecCnt = 0;
 		try {
-			sql = "select * from member where level = ? order by idx desc";
+			if(level > 3) {
+				sql = "select count(*) as cnt from member";
+				pstmt = conn.prepareStatement(sql);
+			}
+			else {
+				sql = "select count(*) as cnt from member where level = ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, level);
+			}
+			rs = pstmt.executeQuery();
+			rs.next();
+			totRecCnt = rs.getInt("cnt");
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return totRecCnt;
+	}
+
+	//회원 탈퇴 신청 (userDel 필드의 값을 NO -> YES 로 변경)
+	public int setMemberDeleteCheck(String mid) {
+		int res = 0;
+		try {
+			sql = "update member set userDel = 'OK' where mid = ?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, memberLv);
+			pstmt.setString(1, mid);
+			res = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		return res;
+	}
+
+	//회원 삭제
+	public void setMemberDeleteOk(int idx) {
+		try {
+			sql = "delete from member where idx = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+	}
+
+	//회원 상세정보
+	public MemberVO getMemberIdxSearch(int idx) {
+		vo = new MemberVO();
+		try {
+			sql = "select * from member where idx = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, idx);
 			rs = pstmt.executeQuery();
 			
-			while(rs.next()) {
-				vo = new MemberVO();
+			if(rs.next()) {
 				vo.setIdx(rs.getInt("idx"));
 				vo.setMid(rs.getString("mid"));
 				vo.setPwd(rs.getString("pwd"));
@@ -359,15 +424,12 @@ public class MemberDAO {
 				vo.setStartDate(rs.getString("startDate"));
 				vo.setLastDate(rs.getString("lastDate"));
 				vo.setTodayCnt(rs.getInt("todayCnt"));
-				vos.add(vo);
 			}
-			
 		} catch (SQLException e) {
-			System.out.println("SQL 오류 : " + e.getMessage());
+			System.out.println("sql오류 : " + e.getMessage());
 		} finally {
 			rsClose();
 		}
-		return vos;
+		return vo;
 	}
-	
 }

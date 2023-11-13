@@ -16,7 +16,7 @@
 		<hr/>
 		<p>방명록 새 글 : </p>
 		<p>게시판 새 글 : </p>
-		<p>신규등록회원 새 글 : </p>
+		<p>신규등록회원 : <a href="adminMemberList.ad?memberLv=1">${mCount}건</a></p>
 	</div>
 <p><br/></p>
 </body>

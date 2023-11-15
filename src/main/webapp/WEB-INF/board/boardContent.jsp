@@ -116,7 +116,8 @@
     </tr>
     <tr>
       <td colspan="4" class="text-center">
-        <input type="button" value="돌아가기" onclick="location.href='boardList.bo?pag=${pag}&pageSize=${pageSize}';" class="btn btn-warning"/> &nbsp;
+        <c:if test="${flag != 'search'}"><input type="button" value="돌아가기" onclick="location.href='boardList.bo?pag=${pag}&pageSize=${pageSize}';" class="btn btn-warning"/> &nbsp;</c:if>
+        <c:if test="${flag == 'search'}"><input type="button" value="돌아가기" onclick="location.href='boardSearch.bo?pag=${pag}&pageSize=${pageSize}&search=${search}&searchString=${searchString}';" class="btn btn-warning"/> &nbsp;</c:if>
         <c:if test="${sMid == vo.mid || sLevel == 0}">
         	<input type="button" value="수정하기" onclick="location.href='boardUpdate.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}';" class="btn btn-info"/> &nbsp;
         	<input type="button" value="삭제하기" onclick="boardDelete()" class="btn btn-danger"/>
@@ -124,6 +125,19 @@
       </td>
     </tr>
   </table>
+  <!-- 이전글/다음글 처리 -->
+  <table class="table table-borderless">
+  	<tr>
+  		<td>
+  			<c:if test="${!empty nextVo.title}">
+	  			<a href="boardContent.bo?idx=${nextVo.idx}&pag=${pag}&pageSize=${pageSize}">다음글 : ${nextVo.title}</a><br/>
+  			</c:if>
+  			<c:if test="${!empty preVo.title}">
+  				<a href="boardContent.bo?idx=${preVo.idx}&pag=${pag}&pageSize=${pageSize}">이전글 : ${preVo.title}</a><br/>
+  			</c:if>
+  		</td>
+  	</tr>
+  </table> 
 </div>
 <p><br/></p>
 <jsp:include page="/include/footer.jsp" />

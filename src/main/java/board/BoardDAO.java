@@ -41,7 +41,7 @@ public class BoardDAO {
 	public ArrayList<BoardVO> getBoardList(int startIndexNo, int pageSize) {
 		ArrayList<BoardVO> vos = new ArrayList<BoardVO>();
 		try {
-			sql = "select * from board order by idx desc limit ?, ?";
+			sql = "select *,timestampdiff(hour, wDate, now()) as hour_diff from board order by idx desc limit ?, ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, startIndexNo);
 			pstmt.setInt(2, pageSize);
@@ -61,6 +61,7 @@ public class BoardDAO {
 				vo.setOpenSw(rs.getString("openSw"));
 				vo.setwDate(rs.getString("wDate"));
 				vo.setGood(rs.getInt("good"));
+				vo.setHour_diff(rs.getInt("hour_diff"));
 				vos.add(vo);
 			}
 		} catch (SQLException e) {
@@ -234,5 +235,65 @@ public class BoardDAO {
 			pstmtClose();
 		}
 		return res;
+	}
+
+	//검색기를 사용한 게시물 검색
+	public ArrayList<BoardVO> getBoardContentSearch(String search, String searchString) {
+		ArrayList<BoardVO> vos = new ArrayList<BoardVO>();
+		try {
+			sql = "select *,timestampdiff(hour, wDate, now()) as hour_diff from board where " + search + " like ? order by idx desc";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "%"+searchString+"%");	//like '%김%' <-따옴표 때문에 여기에 %% 쓰기
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				vo = new BoardVO();
+				vo.setIdx(rs.getInt("idx"));
+				vo.setMid(rs.getString("mid"));
+				vo.setNickName(rs.getString("nickName"));
+				vo.setEmail(rs.getString("email"));
+				vo.setHomePage(rs.getString("homePage"));
+				vo.setTitle(rs.getString("title"));
+				vo.setContent(rs.getString("content"));
+				vo.setReadNum(rs.getInt("readNum"));
+				vo.setHostIp(rs.getString("hostIp"));
+				vo.setOpenSw(rs.getString("openSw"));
+				vo.setwDate(rs.getString("wDate"));
+				vo.setGood(rs.getInt("good"));
+				vo.setHour_diff(rs.getInt("hour_diff"));
+				vos.add(vo);
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL구문 오류 : " + e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vos;
+	}
+
+	//
+	public BoardVO getPreNextSearch(int idx, String str) {
+		vo = new BoardVO();
+		try {
+			if(str.equals("pre")) {
+				sql = "select idx,title from board where idx < ? order by idx desc limit 1";
+			}
+			else {
+				sql = "select idx,title from board where idx > ? order by idx limit 1";
+			}
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				vo.setIdx(rs.getInt("idx"));
+				vo.setTitle(rs.getString("title"));
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL구문 오류 : " + e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vo;
 	}
 }

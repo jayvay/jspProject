@@ -14,7 +14,7 @@ create table board (
 	wDate datetime default now(),			-- 게시글 올린 날짜(시간)
 	good int default 0,								-- 게시글 좋아요 수 누적
 	
-	primary key(idx),
+	primary key(idx)
 );
 
 desc board;
@@ -22,9 +22,63 @@ select * from board;
 
 insert into board values (default, 'admin', '고나리', 'admin@naver.com', 'http://', '축 게시판 시작', '게시판 서비스를 시작합니다', default, '192.168.50.52', default, default, default);
 
+/*게시판에 댓글 달기*/
+create table boardReply (
+	idx int not null auto_increment, -- 댓글의 고유번호
+	boardIdx int not null,					 -- 원본글(부모글)의 고유번호(외래키로 설정)
+	mid varchar(30) not null,				 -- 댓글 올린이의 아이디
+	nickName varchar(30) not null, 	 -- 댓글 올린이의 닉네임
+	wDate datetime default now(),		 -- 댓글 올린 날짜
+	hostIp varchar(50) not null, 	   -- 댓글 올린 PC의 고유 IP
+	content text not null,					 -- 댓글 내용
+	
+	primary key(idx),
+	foreign key(boardIdx) references board(idx)
+	on update cascade		-- 부모필드를 수정하면 함께 영향을 받는다
+	on delete restrict 	-- 부모필드를 함부로 삭제할 수 없다
+);
+desc boardReply;
+insert into boardReply values (default, 5, 'admin', '고나리', default, '192.168.50.199', '댓글이랍니당');
+insert into boardReply values (default, 5, 'go123', '희수', default, '210.168.50.199', '이제 댓글도 쓸 수 있다고요!?');
+insert into boardReply values (default, 4, 'guryongpo', '구룡포', default, '210.233.50.199', '안녕하세요');
+delete from boardReply where idx = 4;
+select * from boardReply;
+select b.*,br.nickName from board b, boardReply br where b.idx = br.boardIdx;
+
+select b.*,br.nickName,br.boardIdx from board b, boardReply br where b.idx=(select boardIdx from boardReply where boardIdx=5 limit 1);
+select b.*,br.nickName,br.boardIdx from board b, (select * from boardReply where boardIdx=18) br where b.idx=5;
+
+
 select * from board order by idx desc limit 0, 10;
 
 select *,datediff(wDate, now()) from board order by idx desc limit 0, 10;
+
+
+/*댓글 수 출력*/
+-- 게시판(board) 리스트 화면에서 글 제목 옆에 해당 글의 댓글(boardReply) 수를 출력해보자
+-- 전체 board 테이블의 내용을 최신순으로 출력
+select * from board order by idx desc;
+
+-- board 테이블 고유번호 5번에 해당하는 댓글(boardReply) 테이블의 댓글 수
+select count(*) from boardReply where boardIdx = 5;
+select count(*) from boardReply where boardIdx = 4;
+
+-- 앞의 예에서 원본글의 고유번호와 총 댓글의 개수를 replyCnt라는 변수로 출력
+select boardIdx,count(*) as replyCnt from boardReply where boardIdx = 5;
+
+-- 앞의 예제 + 원본글을 쓴 닉네임도 함께 출력(닉네임은 부모테이블에서 가져오기)
+select boardIdx,count(*) as replyCnt , (select nickName from board where idx = 5) as nickName from boardReply where boardIdx = 5;
+
+-- 부모관점(board)에서 5번 게시글의 mid와 닉네임을 출력
+select mid,nickName from board where idx = 5;
+
+-- 닉네임을 자식테이블에서 가져오기
+select mid,(select nickName from boardReply where boardIdx = 5 limit 1) as nickName from board where idx = 5;
+
+-- 원본글에 해당하는 댓글의 개수를 원본글과 함께 출력
+select *,(select count(*) from boardReply where boardIdx=5) as replyCnt from board where idx=5;
+
+
 /*new.gif 24시간만 보여주기*/
 select *,timestampdiff(hour, wDate, now()) from board order by idx desc limit 0, 10;
 

@@ -13,10 +13,19 @@ public class BoardSearchCommand implements BoardInterface {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String search = request.getParameter("search")==null ? "" : request.getParameter("search");
 		String searchString = request.getParameter("searchString")==null ? "" : request.getParameter("searchString");
+		
+		BoardDAO dao = new BoardDAO();
+		
 		int pag = request.getParameter("pag")==null ? 1 : Integer.parseInt(request.getParameter("pag"));
 		int pageSize = request.getParameter("pageSize")==null ? 3 : Integer.parseInt(request.getParameter("pageSize"));
-
-		BoardDAO dao = new BoardDAO();
+		int totRecCnt = dao.getTotRecCnt(search , searchString);
+		int totPage = (totRecCnt % pageSize)==0 ? (totRecCnt / pageSize) : (totRecCnt / pageSize) + 1 ;
+		int startIndexNo = (pag - 1) * pageSize;
+		int curScrStartNo = totRecCnt - startIndexNo;
+		
+		int blockSize = 3;
+		int curBlock = (pag - 1) / blockSize;
+		int lastBlock = (totPage - 1) / blockSize;
 		
 		ArrayList<BoardVO> vos = dao.getBoardContentSearch(search, searchString);
 		
@@ -30,8 +39,14 @@ public class BoardSearchCommand implements BoardInterface {
 		request.setAttribute("searchTitle", searchTitle);
 		request.setAttribute("searchCnt", vos.size());
 		request.setAttribute("searchString", searchString);
+		
 		request.setAttribute("pag", pag);
 		request.setAttribute("pageSize", pageSize);
+		request.setAttribute("totPage", totPage);
+		request.setAttribute("curScrStartNo", curScrStartNo);
+		request.setAttribute("blockSize", blockSize);
+		request.setAttribute("curBlock", curBlock);
+		request.setAttribute("lastBlock", lastBlock);
 	}
 
 }

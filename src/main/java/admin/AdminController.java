@@ -31,6 +31,14 @@ public class AdminController extends HttpServlet {
 			command.execute(request, response);
 			viewPage = "/WEB-INF/main/main.jsp";
 		}
+		else if(com.equals("/complaintInput")) {
+			viewPage += "/complaintInput.jsp";
+		}
+		else if(com.equals("/complaintInputOk")) {
+			command = new ComplaintInputOkCommand();
+			command.execute(request, response);
+			return;
+		}
 		else if(level > 0) {
 			request.getRequestDispatcher("/").forward(request, response);
 		}
@@ -60,6 +68,7 @@ public class AdminController extends HttpServlet {
 			command.execute(request, response);
 			viewPage += "/member/adminMemberInfor.jsp";
 		}
+
 		request.getRequestDispatcher(viewPage).forward(request, response);
 	}
 }

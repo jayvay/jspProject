@@ -82,6 +82,7 @@ create table test4 (
 	test3Code varchar(10),
 	test4Code varchar(10),
 	unique key (test4Code),
+	
 	foreign key (test2Code) references test2 (test2Code),
 	foreign key (test3Code) references test3 (test3Code)
 );
@@ -100,8 +101,8 @@ create table test5 (
 	test2Code varchar(10),
 	test3Code varchar(10),
 	test4Code varchar(10),
-	unique key (test2Code, test3Code),
-	unique key (test4Code),
+--	unique key (test2Code, test3Code),
+--	unique key (test4Code),
 	foreign key (test2Code) references test2 (test2Code),
 	foreign key (test3Code) references test3 (test3Code),
 	foreign key (test4Code) references test4 (test4Code)

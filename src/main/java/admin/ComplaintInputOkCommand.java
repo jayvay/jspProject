@@ -22,7 +22,6 @@ public class ComplaintInputOkCommand implements AdminInterface {
 		vo.setPartIdx(partIdx);
 		vo.setCpMid(cpMid);
 		vo.setCpContent(cpContent);
-		System.out.println("vo :" + vo);
 		
 		BoardDAO dao = new BoardDAO();
 		

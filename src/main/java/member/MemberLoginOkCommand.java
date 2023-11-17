@@ -46,7 +46,7 @@ public class MemberLoginOkCommand implements MemberInterface {
 			Date today = new Date();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			String strToday = sdf.format(today);
-			System.out.println(strToday);
+			//System.out.println(strToday);
 			
 			//오늘과 최종방문일이 같으면 방문횟수 증가
 			if(strToday.equals(vo.getLastDate().substring(0,10))) {
@@ -76,7 +76,7 @@ public class MemberLoginOkCommand implements MemberInterface {
 				//Date date1 = sdf.parse(strToday);
 				Date date2 = sdf.parse(vo.getStartDate());
 				long dRes = (today.getTime()- date2.getTime()) / (1000 * 60 * 60 * 24); 
-				System.out.println("가입후 지난 날짜 : " + dRes);
+				//System.out.println("가입후 지난 날짜 : " + dRes);
 				if(vo.getLevel()==1 && dRes <= 10 && vo.getVisitCnt() >= 5) vo.setLevel(2); 
 			} catch (ParseException e) {
 				e.printStackTrace();

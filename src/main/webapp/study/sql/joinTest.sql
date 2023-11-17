@@ -59,7 +59,8 @@ delete from hakkwa where code = 101;
 select * from hakkwa;
 select * from student;
 
-select * from hakkwa Inner Join student;
+select * from hakkwa inner Join student;
+
 select * from hakkwa Inner Join student on hakkwa.code = student.hakkwa_code;
 select * from hakkwa Join student on hakkwa.code = student.hakkwa_code;
 select * from hakkwa as h Inner Join student as s on h.code = s.hakkwa_code;
@@ -67,16 +68,17 @@ select * from hakkwa as h, student as s where h.code = s.hakkwa_code;
 
 /* 내부 조인 : LEFT JOIN, RIGHT JOIN */
 -- LEFT JOIN(왼쪽 기준) : 왼쪽 자료를 모두 가져오고, 오른쪽은 만족하는 것만 가져온다. 없으면 NULL로 채운다.
-select * from hakkwa h left join student s on h.code = s.hakkwa_code;
+select * from hakkwa h left outer join student s on h.code = s.hakkwa_code;
 -- RIGHT JOIN(오른쪽 기준) : 오른쪽 자료를 모두 가져오고, 왼쪽은 만족하는 것만 가져온다. 없으면 NULL로 채운다.
-select * from hakkwa h right join student s on h.code = s.hakkwa_code;
+select * from hakkwa h right outer join student s on h.code = s.hakkwa_code;
 
 /* Cross Join (곱집합) : 모든 행의 자료들을 다 가져온다. */
 select * from hakkwa, student;
 
 /* Full outer Join (합집합) MySQL에는 없음, MySQL에서는 UNION 명령을 사용한다. */
-select *,h.hakkwa_code,s.name from hakkwa h union select hakkwa_code, name from student s;
-
+select * from hakkwa h left outer join student s on h.code = s.hakkwa_code
+union
+select * from hakkwa h right outer join student s on h.code = s.hakkwa_code;
 
 /* 연습 자료 */
 /* 학생 정보 테이블 */
@@ -93,7 +95,7 @@ insert into student2 values (default, '라라라', 400);
 insert into student2 values (default, '하이찬', 101);
 select * from student2;
 
-select name,hakkwa_code from student union select name, hakkwa_code from student2;
+select name,code from student union select name, hakkwa_code from student2;
 
 select * from student2 s2, student s1;
 select * from student2 s2, student s1 where s2.name = s1.name;

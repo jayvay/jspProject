@@ -25,8 +25,8 @@ public class MemberMainCommand implements MemberInterface {
 		GuestDAO guestDao = new GuestDAO();
 		ArrayList<GuestVO> gVos = guestDao.getMemberSearch(mid, mVo.getName(), mVo.getNickName());
 		
-		System.out.println(mVo);
-		System.out.println(gVos);
+//		System.out.println(mVo);
+//		System.out.println(gVos);
 		request.setAttribute("mVo", mVo);
 		request.setAttribute("gVos", gVos);
 	}

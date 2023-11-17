@@ -20,7 +20,7 @@
 			정회원 등업 조건
 		</pre>
 		<hr/>
-		<div><img src="${ctp}/images/member/noImage.jpg" width="200px" /></div>
+		<div><img src="${ctp}/images/member/${mVo.photo}" width="200px" /></div>
 		<div>
 			<p>현재 ${sNickName}(${sStrLevel})님 접속 중입니다.</p>
 			<p>총 방문 횟수 : ${mVo.visitCnt}회</p>

@@ -91,6 +91,24 @@
     	let extraAddress = myform.extraAddress.value + " ";
   		myform.address.value = postcode + "/" + roadAddress + "/" + detailAddress + "/" + extraAddress + "/";
     	
+  		//사진 최대 용량과 확장자 제한
+  		let fName = document.getElementById("file").value;
+  		let maxSize = 1024 * 1024 * 2;
+  		let ext = fName.substring(fName.lastIndexOf(".")+1).toLowerCase();
+  		
+  		if(fName.trim() == "") {
+  			fName = 
+  		}
+  		
+  		let fileSize = document.getElementById("file").files[0].size;
+  		
+  		if(ext != 'jpg' && ext != 'gif' && ext != 'png') {
+  			alert("사진은 jpg/gif/png 파일만 업로드 가능합니다.");
+  		}
+  		else if(fileSize > maxSize) {
+  			alert("업로드 가능한 사진의 최대 용량은 2MByte 입니다.");
+  		}
+  		
     	// 전송전에 모든 체크가 끝나면 submitFlag가 1로 되게된다. 이때 값들을 서버로 전송처리한다.
     	if(submitFlag == 1) {
     		if(nickCheckSw == 0) {
@@ -269,7 +287,7 @@
     </div>
     <div  class="form-group">
       회원 사진(파일용량:2MByte이내) :
-      <input type="file" name="fName" id="file" class="form-control-file border"/>
+      <input type="file" name="fName" id="file" onchange="imgCheck(this)" class="form-control-file border"/>
     </div>
     <button type="button" class="btn btn-secondary" onclick="fCheck()">정보수정</button> &nbsp;
     <button type="reset" class="btn btn-secondary">다시작성</button> &nbsp;

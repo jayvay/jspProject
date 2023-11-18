@@ -385,7 +385,7 @@ public class BoardDAO {
 		return res;
 	}
 
-	//
+	//신고 등록
 	public void setComplaintInputOk(ComplaintVO vo) {
 		try {
 			sql = "insert into complaint values (default, ?, ?, ?, ?, default)";
@@ -400,6 +400,32 @@ public class BoardDAO {
 		} finally {
 			pstmtClose();
 		}	
+	}
+
+	//신고 리스트 조회
+	public ArrayList<ComplaintVO> getComplaintList() {
+		ArrayList<ComplaintVO> vos = new ArrayList<>();
+		try {
+			sql = "select * from complaint order by idx desc";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ComplaintVO vo = new ComplaintVO();
+				vo.setIdx(rs.getInt("idx"));
+				vo.setPart(rs.getString("part"));
+				vo.setPartIdx(rs.getInt("partIdx"));
+				vo.setCpMid(rs.getString("cpMid"));
+				vo.setCpContent(rs.getString("cpContent"));
+				vo.setCpDate(rs.getString("cpDate"));
+				vos.add(vo);
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL구문 오류 : " + e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vos;
 	}
 	
 	

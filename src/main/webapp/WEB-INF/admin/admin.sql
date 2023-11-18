@@ -14,3 +14,5 @@ create table complaint (
 desc complaint;
 
 drop table complaint;
+
+delete from complaint where idx = 1;

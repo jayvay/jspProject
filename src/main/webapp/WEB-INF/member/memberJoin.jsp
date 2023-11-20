@@ -83,18 +83,20 @@
     	
     	//사진 최대 용량과 확장자 제한
   		let fName = document.getElementById("file").value;
-  		let maxSize = 1024 * 1024 * 2;
-  		let ext = fName.substring(fName.lastIndexOf(".")+1).toLowerCase();
-
-  		let fileSize = document.getElementById("file").files[0].size;
-  		
-  		if(ext != 'jpg' && ext != 'gif' && ext != 'png') {
-  			alert("사진은 jpg/gif/png 파일만 업로드 가능합니다.")
+    	
+  		if(fName.trim() != "") {
+	  		let ext = fName.substring(fName.lastIndexOf(".")+1).toLowerCase();
+	  		let maxSize = 1024 * 1024 * 2;
+	  		let fileSize = document.getElementById("file").files[0].size;
+	  		
+	  		if(ext != 'jpg' && ext != 'gif' && ext != 'png') {
+	  			alert("사진은 jpg/gif/png 파일만 업로드 가능합니다.")
+	  		}
+	  		else if(fileSize > maxSize) {
+	  			alert("업로드 가능한 사진의 최대 용량은 2MByte 입니다.");
+	  		}
+	  		submitFlag = 1;
   		}
-  		else if(fileSize > maxSize) {
-  			alert("업로드 가능한 사진의 최대 용량은 2MByte 입니다.");
-  		}
-  	
     	
     	if(tel2 != "" && tel3 != "") {
     	  if(!regTel.test(tel)) {

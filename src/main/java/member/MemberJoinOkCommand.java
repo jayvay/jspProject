@@ -22,9 +22,9 @@ public class MemberJoinOkCommand implements MemberInterface {
 		MultipartRequest multipartRequest = new MultipartRequest(request, realPath, maxSize, encoding, new DefaultFileRenamePolicy());
 		
 		//String originalFileName =multipartRequest.getOriginalFileName("fName");
-		String filesystemName = multipartRequest.getFilesystemName("fName");
-		System.out.println(filesystemName);
-		if(filesystemName == null) filesystemName = "noImage.jpg";
+		String photo = multipartRequest.getFilesystemName("fName");
+		System.out.println(photo);
+		if(photo == null) photo = "noImage.jpg";
 		
 		String mid = multipartRequest.getParameter("mid")==null ? "" : multipartRequest.getParameter("mid");
 		String pwd = multipartRequest.getParameter("pwd")==null ? "" : multipartRequest.getParameter("pwd");
@@ -89,7 +89,7 @@ public class MemberJoinOkCommand implements MemberInterface {
 		vo.setHomePage(homePage);
 		vo.setJob(job);
 		vo.setHobby(hobby);
-		vo.setPhoto(filesystemName);
+		vo.setPhoto(photo);
 		vo.setContent(content);
 		vo.setUserInfor(userInfor);
 		

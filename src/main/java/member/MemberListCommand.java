@@ -14,7 +14,7 @@ public class MemberListCommand implements AdminInterface {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int level = request.getParameter("memberLv")==null ? 4 : Integer.parseInt(request.getParameter("memberLv"));
+		int level = request.getParameter("level")==null ? 4 : Integer.parseInt(request.getParameter("level"));
 
 		MemberDAO dao = new MemberDAO();
 		
@@ -68,7 +68,7 @@ public class MemberListCommand implements AdminInterface {
 		else if(level == 3) strLv = "우수회원"; 
 		else strLv = "전체회원"; 
 		
-		request.setAttribute("memberLv", level);
+		request.setAttribute("level", level);
 		request.setAttribute("strLv", strLv);
 	}
 

@@ -1,5 +1,6 @@
 package member;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -23,9 +24,9 @@ public class MemberUpdateOkCommand implements MemberInterface {
 		MultipartRequest multipartRequest = new MultipartRequest(request, realPath, maxSize, encoding, new DefaultFileRenamePolicy());
 		
 		//String originalFileName =multipartRequest.getOriginalFileName("fName");
-		String filesystemName = multipartRequest.getFilesystemName("fName");
-		System.out.println(filesystemName);
-		if(filesystemName == null) filesystemName = "noImage.jpg";
+		String photo = multipartRequest.getFilesystemName("fName");
+		String oldFileName = multipartRequest.getParameter("photo");
+		if(photo == null) photo = oldFileName;
 		
 		String mid = multipartRequest.getParameter("mid")==null ? "" : multipartRequest.getParameter("mid");
 		String nickName = multipartRequest.getParameter("nickName")==null ? "" : multipartRequest.getParameter("nickName");
@@ -80,11 +81,14 @@ public class MemberUpdateOkCommand implements MemberInterface {
 		vo.setHomePage(homePage);
 		vo.setJob(job);
 		vo.setHobby(hobby);
-		vo.setPhoto(filesystemName);
+		vo.setPhoto(photo);
 		vo.setContent(content);
 		vo.setUserInfor(userInfor);
 		
 		int res = dao.setMemberUpdateOk(vo);
+		
+		// DB에 정보수정을 마친 후, 회원사진이 변경된 경우는 기존의 사진을 서버에서 삭제시켜준다.
+		if(!photo.equals(oldFileName)) new File(realPath + "/" + oldFileName).delete();
 		
 		if(res == 1) {
 			session.setAttribute("sNickName", nickName);

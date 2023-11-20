@@ -247,7 +247,7 @@ public class MemberDAO {
 	public ArrayList<MemberVO> getMemberList(int startIndexNo, int pageSize, int level) {
 		ArrayList<MemberVO> vos = new ArrayList<MemberVO>();
 		try {
-			if(level > 3) {
+			if(level != 99 && level > 3) {
 				sql = "select *, timestampdiff(day, lastDate, now()) as deleteDiff from member order by idx desc limit ?,?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, startIndexNo);
@@ -341,7 +341,7 @@ public class MemberDAO {
 	public int getTotRecCnt(int level) {
 		int totRecCnt = 0;
 		try {
-			if(level > 3) {
+			if(level != 99 && level > 3) {
 				sql = "select count(*) as cnt from member";
 				pstmt = conn.prepareStatement(sql);
 			}
@@ -361,11 +361,11 @@ public class MemberDAO {
 		return totRecCnt;
 	}
 
-	//회원 탈퇴 신청 (userDel 필드의 값을 NO -> YES 로 변경)
+	//회원 탈퇴 신청 (userDel 필드의 값을 NO -> YES 로 변경, level을 99번으로 변경)
 	public int setMemberDeleteCheck(String mid) {
 		int res = 0;
 		try {
-			sql = "update member set userDel = 'OK' where mid = ?";
+			sql = "update member set userDel = 'OK', level = 99 where mid = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, mid);
 			res = pstmt.executeUpdate();
@@ -378,17 +378,19 @@ public class MemberDAO {
 	}
 
 	//회원 삭제
-	public void setMemberDeleteOk(int idx) {
+	public int setMemberDeleteOk(int idx) {
+		int res = 0;
 		try {
 			sql = "delete from member where idx = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, idx);
-			pstmt.executeUpdate();
+			res = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("SQL 오류 : " + e.getMessage());
 		} finally {
 			pstmtClose();
 		}
+		return res;
 	}
 
 	//회원 상세정보

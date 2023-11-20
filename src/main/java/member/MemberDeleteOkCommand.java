@@ -1,5 +1,6 @@
 package member;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -11,12 +12,16 @@ public class MemberDeleteOkCommand implements MemberInterface {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int idx = request.getParameter("idx") == null ? 0 : Integer.parseInt(request.getParameter("idx"));
+		String photo = request.getParameter("photo") == null? "" : request.getParameter("photo");
 		
 		MemberDAO dao = new MemberDAO();
 		
-		dao.setMemberDeleteOk(idx);
+		int res = dao.setMemberDeleteOk(idx);
 		
-		
+		if(res == 1 && !photo.equals("noImage.jpg")) { //이거 맞는지 확인하기 1120_2223
+			String realPath = request.getServletContext().getRealPath("/images/member/");
+			new File(realPath + photo).delete();
+		}
 	}
 
 }

@@ -44,13 +44,13 @@
 	        <a class="nav-link" href="boardList.bo">Board</a>
 	      </li>
 	      <li class="nav-item">
-	        <a class="nav-link" href="${ctp}/PdsList">Pds</a>
+	        <c:if test="${level != 1}"><a class="nav-link" href="pdsList.pds">Pds</a></c:if>
 	      </li>    
 	      <li class="nav-item ml-2 mr-2">
 	         <div class="dropdown">
 					    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">Study1</button>
 					    <div class="dropdown-menu">
-					      <a class="dropdown-item" href="${ctp}/study/password/passForm.jsp">암호화연습</a>
+					      <a class="dropdown-item" href="${ctp}/study/password/passForm.jsp">암호화연습</a>	
 					      <a class="dropdown-item" href="${ctp}/mapping/Test1">디렉토리 패턴</a>
 					      <a class="dropdown-item" href="${ctp}/mapping/test5.do">확장자 패턴</a>
 					      <a class="dropdown-item" href="${ctp}/mapping/test5.re">확장자 패턴2</a>

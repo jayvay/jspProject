@@ -44,20 +44,20 @@
  		
  		//등급 검색
 		function lvSearch() {
-			let memberLv = document.getElementById("memberLv").value;
+			let level = document.getElementById("level").value;
 			
-			location.href = "adminMemberList.ad?memberLv="+memberLv;
+			location.href = "adminMemberList.ad?level="+level;
 		}
 		
 		//탈퇴신청한 회원 탈퇴시키기
-		function memberDeleteOk(idx) {
+		function memberDeleteOk(idx, photo) {
 			let ans = confirm("선택한 회원을 정말 삭제하시겠습니까?");
 			if(!ans) return false;
 			
 			$.ajax({
 				url : "memberDeleteOk.mem",
 				type : "post",
-				data : {idx : idx},
+				data : { idx : idx , photo : photo },
 				success : function() {
 					alert("회원 삭제 완료");
 					location.reload();
@@ -77,12 +77,12 @@
 			<tr>
 				<td>
 					<div>등급별 검색
-						<select name="memberLv" id="memberLv" onchange="lvSearch()">
-							<option value="4" ${memberLv==4 ? "selected" : ""}>전체회원</option>
-							<option value="0" ${memberLv==0 ? "selected" : ""}>관리자</option>
-							<option value="1" ${memberLv==1 ? "selected" : ""}>준회원</option>
-							<option value="2" ${memberLv==2 ? "selected" : ""}>정회원</option>
-							<option value="3" ${memberLv==3 ? "selected" : ""}>우수회원</option>
+						<select name="level" id="level" onchange="lvSearch()">
+							<option value="4" ${level==4 ? "selected" : ""}>전체회원</option>
+							<option value="0" ${level==0 ? "selected" : ""}>관리자</option>
+							<option value="1" ${level==1 ? "selected" : ""}>준회원</option>
+							<option value="2" ${level==2 ? "selected" : ""}>정회원</option>
+							<option value="3" ${level==3 ? "selected" : ""}>우수회원</option>
 						</select>
 					</div>
 				</td>
@@ -102,7 +102,7 @@
 			<c:forEach var="vo" items="${vos}" varStatus="st">
 				<tr>
 					<td>${curScrStartNo}</td>
-					<td><a href="adminMemberInfor.ad?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}&level=${memberLv}">${vo.mid}</a></td>
+					<td><a href="adminMemberInfor.ad?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}&level=${level}">${vo.mid}</a></td>
 					<%-- <td><a href="adminMemberInfor.ad?idx=${vo.idx}>${vo.mid}</a></td> --%>
 					<td>${vo.nickName}</td>
 					<td>${vo.name}</td>
@@ -110,7 +110,7 @@
 					<td>${vo.todayCnt}</td>
 					<td>
 						<c:if test="${vo.userDel == 'OK'}"><font color="red"><b>탈퇴신청</b></font>
-							<c:if test="${vo.deleteDiff >= 30}">(<a href="javascript:memberDeleteOk(${vo.idx})" title="30일경과">X</a>)</c:if>
+							<c:if test="${vo.deleteDiff >= 30}">(<a href="javascript:memberDeleteOk('${vo.idx}','${vo.photo}')" title="30일경과">X</a>)</c:if>
 						</c:if>
 						<c:if test="${vo.userDel != 'OK'}">활동중</c:if>
 					</td>
@@ -121,6 +121,7 @@
 								<option value="1/${vo.idx}" ${vo.level==1 ? "selected" : ""}>준회원</option>
 								<option value="2/${vo.idx}" ${vo.level==2 ? "selected" : ""}>정회원</option>
 								<option value="3/${vo.idx}" ${vo.level==3 ? "selected" : ""}>우수회원</option>
+								<option value="4/${vo.idx}" ${vo.level > 3 ? "selected" : ""}> </option>
 							</select>
 						</form>
 					</td>

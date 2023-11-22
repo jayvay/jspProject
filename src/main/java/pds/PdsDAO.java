@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import admin.ComplaintVO;
+import admin.review.ReviewVO;
 import common.GetConn;
 
 public class PdsDAO {
@@ -196,6 +197,35 @@ public class PdsDAO {
 			rsClose();
 		}
 		return totRecCnt;
+	}
+
+	//리뷰 리스트 가져오기
+	public ArrayList<ReviewVO> getReviewList(int idx, String part) {
+		ArrayList<ReviewVO> rVos = new ArrayList<ReviewVO>();
+		try {
+			sql = "select * from review where partIdx = ? and part = ? order by idx";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			pstmt.setString(2, part);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ReviewVO vo = new ReviewVO();
+				vo.setIdx(rs.getInt("idx"));
+				vo.setPart(rs.getString("part"));
+				vo.setPartIdx(rs.getInt("partIdx"));
+				vo.setMid(rs.getString("mid"));
+				vo.setStar(rs.getInt("star"));
+				vo.setContent(rs.getString("content"));
+				vo.setrDate(rs.getString("rDate"));
+				rVos.add(vo);
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL구문 오류 : " + e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return rVos;
 	}
 
 }

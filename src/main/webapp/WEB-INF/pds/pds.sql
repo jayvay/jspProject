@@ -22,3 +22,21 @@ desc pds;
 select * from pds order by idx desc;
 
 drop table pds;
+
+alter table pds drop column star;
+alter table pds drop column review;
+
+/* 리뷰테이블 */
+create table review (
+	idx int not null auto_increment, /* 리뷰 고유번호 */
+	part varchar(20) not null, 			 /* 분류(board:게시판, pds:자료실) */
+	partIdx int not null,						 /* 해당 분야의 고유번호 */
+	mid varchar(30) not null,				 /* 리뷰 글쓴이 */
+	star int not null default 0,		 /* 별점 부여 점수 */
+	content text,										 /* 리뷰 내용 */
+	rDate datetime default now(),		 /* 리뷰 올린 날짜 */
+	primary key(idx)
+);
+
+desc review;
+drop table review;

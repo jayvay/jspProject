@@ -40,3 +40,11 @@ update member set point=130, visitCnt=3, lastDate=now(), todayCnt=3 where mid='a
 update member set pwd="03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4" where mid='admin';
 
 select *, timestampdiff(day, lastDate, now()) as deleteDiff from member order by idx desc limit 0,5;
+
+/* 실시간 DB 채팅 테이블 설계 */
+create table memberChat (
+	idx int not null auto_increment primary key,
+	nickName varchar(30) not null,
+	chat varchar(100) not null
+);
+desc memberChat;

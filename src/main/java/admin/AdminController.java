@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import admin.member.MemberLevelChangeCommand;
+import admin.review.ReviewInputCommand;
 import member.MemberListCommand;
 
 @SuppressWarnings("serial")
@@ -36,6 +37,11 @@ public class AdminController extends HttpServlet {
 		}
 		else if(com.equals("/complaintInputOk")) {
 			command = new ComplaintInputOkCommand();
+			command.execute(request, response);
+			return;
+		}
+		else if(com.equals("/reviewInput")) {
+			command = new ReviewInputCommand();
 			command.execute(request, response);
 			return;
 		}
@@ -74,10 +80,11 @@ public class AdminController extends HttpServlet {
 			viewPage += "/adminComplaintList.jsp";
 		}
 		else if(com.equals("/complaintDelete")) {
-			command = new AdminComplaintListCommand();
+			command = new ComplaintDeleteCommand();
 			command.execute(request, response);
-			viewPage += "/adminComplaintList.jsp";
+			viewPage = "/include/message.jsp";
 		}
+	
 
 		request.getRequestDispatcher(viewPage).forward(request, response);
 	}

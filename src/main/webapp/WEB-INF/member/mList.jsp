@@ -13,7 +13,7 @@
     
     function pageSizeCheck() {
     	let pageSize = $("#pageSize").val();
-    	location.href = "mList.mem?pag=${pag}&pageSize="+pageSize;
+    	location.href = "mList.mem?pageSize="+pageSize;
     }
   </script>
 </head>
@@ -74,7 +74,7 @@
 	          </c:choose>
 	        </td>
         </c:if>
-        <c:if test="${vo.userInfor != '공개' && vo.mid != sMid && vo.level != 0}">
+        <c:if test="${vo.userInfor != '공개' && vo.mid != sMid && sLevel != 0}">
           <td colspan="5">비공개</td>
         </c:if>
       </tr>

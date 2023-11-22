@@ -7,10 +7,11 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>title</title>
+	<title>adminComplaintList.jsp</title>
  	<jsp:include page="/include/bs4.jsp" />
  	<script>
  		'use strict';
+ 		
  		
  	</script>
 </head>
@@ -35,7 +36,7 @@
 					<td>${vo.cpMid}</td>
 					<td>${vo.cpContent}</td>
 					<td>${fn:substring(vo.cpDate,0,16)}</td>
-					<td><input type="button" value="삭제" onclick="javascript:location.href='complaintDelete.ad';" class="btn btn-dark btn-sm"/></td>
+					<td><input type="button" value="삭제" onclick="javascript:location.href='complaintDelete.ad?idx=${vo.partIdx}';" class="btn btn-dark btn-sm"/></td>
 				</tr>
 			</c:forEach>
 		</table>

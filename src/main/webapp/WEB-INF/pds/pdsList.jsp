@@ -16,17 +16,20 @@
  		function partCheck() {
 			let part = $("#part").val();
 			
-			location.href="pdsList.pds?part="+ part;
+			location.href="pdsList.pds?pag=${pag}&pageSize=${pageSize}&part="+part;
 		}
  		
- 		function pdsDeleteCheck(idx, fSName) {
-			let ans = confirm("파일을 삭제하시겠습니까?");
-			if(!ans) return false;
- 			
-			let pwd = prompt("비밀번호를 입력하세요");
+ 		function pdsDeleteCheck(idx, title) {
+    	$("#myModal #idx").val(idx);
+    	$("#myModal #title").html(title);
+ 		}  	
+ 		
+ 		function pdsDeleteOk() { 	
+ 			let idx = $("#myModal #idx").val();
+    	let pwd = $("#myModal #pwd").val();
+    	
 			let query = {
 					idx : idx,
-					fSName : fSName,
 					pwd : pwd
 			}
 			
@@ -114,7 +117,10 @@
 			<c:forEach var="vo" items="${vos}" varStatus="st">
 				<tr>
 					<td>${curScrStartNo}</td>
-					<td>${vo.title}<c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif" /></c:if></td>
+					<td>
+						<a href="pdsContent.pds?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}&part=${part}">${vo.title}</a>
+						<c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif" /></c:if>
+					</td>
 					<td>${vo.nickName}</td>
 					<td>
 						<c:if test="${vo.hour_diff > 24}">${fn:substring(vo.fDate,0,10)}</c:if>
@@ -130,14 +136,15 @@
 						<c:forEach var="fName" items="${fNames}" varStatus="st">
 							<a href="${ctp}/images/pds/${fSNames[st.index]}" download="${fName}" onclick="downNumCheck(${vo.idx})" >${fName}</a><br/>
 						</c:forEach>
-						<br/>
 						(<fmt:formatNumber value="${vo.fSize/1024}" pattern="#,##0" /> KByte)
 					</td>
 					<td>${vo.downNum}</td>
 					<td>
 						<c:if test="${vo.mid == sMid || sLevel == 0}">
-							<a href="javascript:pdsDeleteCheck('${vo.idx}','${vo.fSName}')" class="btn btn-danger btn-sm">삭제</a>
+						  <a href="#" onclick="pdsDeleteCheck('${vo.idx}','${vo.title}')" class="badge badge-danger" data-toggle="modal" data-target="#myModal">삭제</a>
 						</c:if>
+						<br/>
+						<a href="pdsTotalDown.pds?idx=${vo.idx}" class="badge badge-primary">전체다운</a>
 					</td>
 				</tr>
 				<tr><td colspan="8" class="m-0 p-0"></td></tr>
@@ -160,6 +167,34 @@
   </ul>
 </div>
 <!-- 블록페이지 끝 -->
+<!-- The Modal -->
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content modal-sm">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title">선택한 자료를 삭제합니다.</h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div>현재글 제목 : <span class="mb-2" id="title"></span></div>
+        <hr class="m-2"/>
+        <form name="modalForm">
+	        <b>등록시 입력한 비밀번호를 입력하세요.</b>
+          <div><input type="password" name="pwd" id="pwd" value="1234" class="form-control"/></div>
+          <hr class="m-2"/>
+          <input type="button" value="확인" onclick="pdsDeleteOk()" class="btn btn-success form-control" />
+          <input type="hidden" name="idx" id="idx"/>
+        </form>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 <p><br/></p>
 <jsp:include page="/include/footer.jsp" />
 </body>

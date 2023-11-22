@@ -1,4 +1,4 @@
-package pds;
+package schedule;
 
 import java.io.IOException;
 
@@ -9,12 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebServlet("*.pds")
-public class PdsController extends HttpServlet {
+@WebServlet("*.sc")
+public class ScheduleController extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		PdsInterface command = null;
-		String viewPage = "/WEB-INF/pds";
+		ScheduleInterface command = null;
+		String viewPage = "/WEB-INF/schedule";
 		
 		String com = request.getRequestURI();
 		com = com.substring(com.lastIndexOf("/"), com.lastIndexOf("."));
@@ -25,40 +25,30 @@ public class PdsController extends HttpServlet {
 		if(level > 4) {
 			request.getRequestDispatcher("/").forward(request, response);
 		}
-		else if(com.equals("/pdsList")) {
-			command = new PdsListCommand();
+		else if(com.equals("/schedule")) {
+			command = new ScheduleCommand();
 			command.execute(request, response);
-			viewPage += "/pdsList.jsp";
+			viewPage += "/schedule.jsp";
 		}
-		else if(com.equals("/pdsInput")) {
-			command = new PdsInputCommand();
+		else if(com.equals("/scheduleMenu")) {
+			command = new ScheduleMenuCommand();
 			command.execute(request, response);
-			viewPage += "/pdsInput.jsp";
+			viewPage += "/scheduleMenu.jsp";
 		}
-		else if(com.equals("/pdsInputOk")) {
-			command = new PdsInputOkCommand();
-			command.execute(request, response);
-			viewPage = "/include/message.jsp";
-		}
-		else if(com.equals("/pdsDeleteOk")) {
-			command = new PdsDeleteOkCommand();
+		else if(com.equals("/scheduleInputOk")) {
+			command = new ScheduleInputOkCommand();
 			command.execute(request, response);
 			return;
 		}
-		else if(com.equals("/pdsDownNumCheck")) {
-			command = new PdsDownNumCheckCommand();
+		else if(com.equals("/scheduleDeleteOk")) {
+			command = new ScheduleDeleteOkCommand();
 			command.execute(request, response);
 			return;
 		}
-		else if(com.equals("/pdsContent")) {
-			command = new PdsContentCommand();
+		else if(com.equals("/scheduleUpdateOk")) {
+			command = new ScheduleUpdateOkCommand();
 			command.execute(request, response);
-			viewPage += "/pdsContent.jsp";
-		}
-		else if(com.equals("/pdsTotalDown")) {
-			command = new PdsTotalDownCommand();
-			command.execute(request, response);
-			return;	
+			return;
 		}
 		
 		request.getRequestDispatcher(viewPage).forward(request, response);

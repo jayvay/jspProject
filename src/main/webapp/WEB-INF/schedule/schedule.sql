@@ -25,3 +25,18 @@ insert into schedule values (default, 'guryongpo', '2023-11-15', '업무', '치�
 insert into schedule values (default, 'guryongpo', '2023-11-20', '여행', '신선한치킨 1주년 기념 여행');
 
 select * from schedule where mid = 'go123' and date_format(sDate, '%Y-%m') = '2023-11' order by sDate, part;
+
+select * from schedule where mid = 'go123' and date_format(sDate, '%Y-%m-%d') = '2023-11-22' order by sDate, part;
+select * from schedule where mid = 'go123' and date_format(sDate, '%Y-%m') = '2023-11' order by sDate, part;
+
+select distinct sDate as cnt from schedule where mid='go123' and date_format(sDate, '%Y-%m')='2023-11' order by sDate, part;
+select distinct sDate,count(*) as cnt from schedule where mid='go123' and date_format(sDate, '%Y-%m')='2023-11' order by sDate, part;
+
+select * from schedule group by date_format(sDate, '%Y-%m')='2023-11' order by sDate, part;
+select *,count(*) from schedule group by date_format(sDate, '%Y-%m')='2023-11' order by sDate, part;
+
+select * from schedule where mid='go123' and date_format(sDate, '%Y-%m')='2023-11' group by sDate order by sDate, part;
+select *,count(*) from schedule where mid='go123' and date_format(sDate, '%Y-%m')='2023-11' group by sDate order by sDate, part;
+select *,count(*) as partCnt from schedule where mid='go123' and date_format(sDate, '%Y-%m')='2023-11' group by sDate,part order by sDate, part;
+
+select *,count(*) from schedule where mid='go123' and date_format(sDate, '%Y-%m')='2023-11' group by part order by sDate, part;

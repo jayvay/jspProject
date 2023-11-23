@@ -44,7 +44,8 @@ public class ScheduleDAO {
 		ArrayList<ScheduleVO> vos = new ArrayList<ScheduleVO>();
 		try {
 			if(sw == 0) {
-				sql = "select * from schedule where mid = ? and date_format(sDate, '%Y-%m') = ? order by sDate, part";
+				//sql = "select * from schedule where mid = ? and date_format(sDate, '%Y-%m') = ? order by sDate, part";
+				sql = "select *,count(part) as partCnt from schedule where mid=? and date_format(sDate, '%Y-%m')=? group by sDate,part order by sDate, part";
 			}
 			else if(sw == 1) {
 				sql = "select * from schedule where mid = ? and date_format(sDate, '%Y-%m-%d') = ? order by sDate";
@@ -61,6 +62,9 @@ public class ScheduleDAO {
 				vo.setPart(rs.getString("part"));
 				vo.setsDate(rs.getString("sDate"));
 				vo.setContent(rs.getString("content"));
+				
+				if(sw == 0) vo.setPartCnt(rs.getInt("partCnt"));
+				
 				vos.add(vo);
 			}
 		} catch (SQLException e) {

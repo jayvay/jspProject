@@ -73,6 +73,7 @@
 					      <a class="dropdown-item" href="fileDownload.st">다운로드</a>
 					      <a class="dropdown-item" href="calendar1.st">달력연습1</a>
 					      <a class="dropdown-item" href="calendar2.st">달력연습2</a>
+					      <a class="dropdown-item" href="api1.st">api연습</a>
 					    </div>
 					  </div>
 	      </li>

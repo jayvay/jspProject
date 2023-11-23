@@ -98,6 +98,46 @@ public class StudyController extends HttpServlet {
 			command.execute(request, response);
 			viewPage += "/calendar/calendar2.jsp";
 		}
+		else if(com.equals("/api1")) {
+			//command = new Api1Command();
+			//command.execute(request, response);
+			viewPage += "/apiTest/api1.jsp";
+		}
+		else if(com.equals("/apiFetch")) {
+			//command = new ApiFetchCommand();
+			//command.execute(request, response);
+			viewPage += "/apiTest/apiFetch.jsp";
+		}
+		else if(com.equals("/apiTest")) {
+			//command = new ApiFetchCommand();
+			//command.execute(request, response);
+			viewPage += "/apiTest/apiTest.jsp";
+		}
+		else if(com.equals("/saveCrimeData")) {
+			command = new SaveCrimeDataCommand();
+			command.execute(request, response);
+			return;
+		}
+		else if(com.equals("/deleteCrimeData")) {
+			command = new DeleteCrimeDataCommand();
+			command.execute(request, response);
+			return;
+		}
+		else if(com.equals("/listCrimeData")) {
+			command = new ListCrimeDataCommand();
+			command.execute(request, response);
+			viewPage += "/apiTest/apiTest.jsp";
+		}
+		else if(com.equals("/policeCheck")) {
+			command = new PoliceCheckCommand();
+			command.execute(request, response);
+			viewPage += "/apiTest/apiTest.jsp";
+		}
+		else if(com.equals("/yearPoliceCheck")) {
+			command = new YearPoliceCheckCommand();
+			command.execute(request, response);
+			viewPage += "/apiTest/apiTest.jsp";
+		}
 		request.getRequestDispatcher(viewPage).forward(request, response);
 	}
 }

@@ -45,10 +45,11 @@
 			$("#scheduleInputView").hide();
 			$("#scheduleInputClose").show();
 			$("#demo").html(str);
+			$("#demo").slideDown(1000);
 		}
  		
  		function scheduleInputClose() {
-			$("#scheduleInputForm").hide();
+			$("#scheduleInputForm").slideUp();
 			$("#scheduleInputClose").hide();
 			$("#scheduleInputView").show();
 		}
@@ -190,7 +191,7 @@
 				<input type="button" value="일정등록" onclick="scheduleInputView()" id="scheduleInputView" class="btn btn-primary" />
 				<input type="button" value="닫기" onclick="scheduleInputClose()" id="scheduleInputClose" class="btn btn-primary" />
 			</div>
-			<div><input type="button" value="돌아가기" onclick="location.href='schedule.sc';" class="btn btn-dark" /></div>
+			<div><input type="button" value="돌아가기" onclick="location.href='schedule.sc?yy=${ymds[0]}&mm=${ymds[1]-1}';" class="btn btn-dark" /></div>
 		</div>
 		<div id="demo"></div>
 		<hr/>

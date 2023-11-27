@@ -83,6 +83,7 @@
 					    <div class="dropdown-menu">
 					      <a class="dropdown-item" href="memberMain.mem">회원메인방</a>
 					      <a class="dropdown-item" href="schedule.sc">일정관리</a>
+					      <a class="dropdown-item" href="webMessage.wm">메세지관리</a>
 					      <a class="dropdown-item" href="memberPwdCheck.mem">회원정보수정</a>
 					      <c:if test="${sLevel != 1}"><a class="dropdown-item" href="mList.mem">회원리스트</a></c:if>
 					      <a class="dropdown-item" href="javascript:memberDelCheck()">회원탈퇴</a>

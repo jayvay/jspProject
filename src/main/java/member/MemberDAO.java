@@ -173,7 +173,7 @@ public class MemberDAO {
 		} catch (SQLException e) {
 			System.out.println("SQL 오류 : " + e.getMessage());
 		} finally {
-			pstmtClose();
+			rsClose();
 		}
 		return res;
 	}

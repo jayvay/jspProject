@@ -32,6 +32,5 @@ public class ReviewInputCommand implements AdminInterface {
 		int res = dao.setReviewInputOk(vo);
 		
 		response.getWriter().write(res+"");
-		System.out.println("아으아아ㅏ아악");
 	}
 }

@@ -156,6 +156,7 @@
 			</tr>
 		</table>
 		<hr/>
+		
 		<div>별점/리뷰 <span>(평점 : <fmt:formatNumber value="${reviewAvg}" pattern="#,##0.0" />)</span>
 			<form name="starForm" id="starForm">
 				<fieldset>
@@ -192,6 +193,8 @@
 			</div>
 			<hr/>
 		</c:forEach>
+		
+		<!-- 파일 내용 -->
 		<div class="text-center">
 			<c:forEach var="fSName" items="${fSNames}" varStatus="st">
 				${st.count}. ${fSName}<br/>
